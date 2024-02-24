@@ -1,8 +1,338 @@
-import base64, codecs
-magic = 'CiMqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioKIyoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgojCiMgV0FSTklORzoKIyAgICBETyBOT1QgTU9ESUZZIFRISVMgRklMRSBJTiBBTlkgV0FZCiMKIyoqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKgojKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqKioqCgoKaW1wb3J0IHN0YXRpc3RpY3MKI2ltcG9ydCBsYWIwMQpmcm9tIGxhYjAxIGltcG9ydCAqCmltcG9ydCByYW5kb20KCmZyb20gbXVsdGlwcm9jZXNzaW5nIGltcG9ydCBzZXRfZm9ya3NlcnZlcl9wcmVsb2FkCmltcG9ydCB1bml0dGVzdAppbXBvcnQgaW8KaW1wb3J0IHVuaXR0ZXN0Lm1vY2sKCmZyb20gY29sb3JhbWEgaW1wb3J0IEZvcmUKZnJvbSBjb2xvcmFtYSBpbXBvcnQgU3R5bGUKZnJvbSBjb2xvcmFtYSBpbXBvcnQgaW5pdAppbml0KGF1dG9yZXNldCA9IFRydWUpCgpjbGFzcyB0ZXN0Y2FzZXModW5pdHRlc3QuVGVzdENhc2UpOgogICAgZGVmIHNldFVwKHNlbGYpOgogICAgICAgIHBhc3MKICAgIGRlZiB0ZWFyRG93bihzZWxmKToKICAgICAgICBwYXNzCgogICAgQHVuaXR0ZXN0Lm1vY2sucGF0Y2goJ3N5cy5zdGRvdXQnLCBuZXdfY2FsbGFibGU9aW8uU3RyaW5nSU8pCiAgICBkZWYgYXNzZXJ0X3N0ZG91dEYxMzExKHNlbGYsIGV4cGVjdGVkX291dHB1dCwgbW9ja19zdGRvdXQpOgogICAgICAgIEYxMzExKCkKICAgICAgICBzZWxmLmFzc2VydEVxdWFsKG1vY2tfc3Rkb3V0LmdldHZhbHVlKCksIGV4cGVjdGVkX291dHB1dCkKCiAgICBkZWYgdGVzdF9GMTMxMShzZWxmKToKICAgICAgICB0cnk6CiAgICAgICAgICAgIHNlbGYuYXNzZXJ0X3N0ZG91dEYxMzExKCI4XG4iKQogICAgICAgICAgICBwYXNzZWQ9MQogICAgICAgIGV4Y2VwdDoKICAgICAgICAgICAgcGFzc2VkPTAKICAgICAgICBmaW5hbGx5OgogICAgICAgICAgICBpZiAocGFzc2VkID09IDEpOgogICAgICAgICAgICAgICAgI3ByaW50KGYiRjEzMTE6ICdceDFiWzY7MzA7NDJtIFBhc3NlZCBceDFiWzBtJyIpCiAgICAgICAgICAgICAgICBwcmludChmIkYxMzExOiB7Rm9yZS5MSUdIVEdSRUVOX0VYfXBhc3NlZHtTdHlsZS5SRVNFVF9BTEx9IikKICAgICAgICAgICAgZWxzZToKICAgICAgICAgICAgICAgIHByaW50KGYiRjEzMTE6IHtGb3JlLlJFRH1mYWlsZWR7U3R5bGUuUkVTRVRfQUxMfSIpCgoKICAgIGRlZiB0ZXN0X0YxMzIxKHNlbGYpOgogICAgICAgIHRyeToKICAgICAgICAgICAgc2VsZi5hc3NlcnRUcnVlKEYxMzIxKDEwLDUpLCAiVHJ1ZSIpCiAgICAgICAgICAgIHNlbGYuYXNzZXJ0VHJ1ZShGMTMyMSgyMiwxMSksICJUcnVlIikKICAgICAgICAgICAgc2VsZi5hc3NlcnRGYWxzZShGMTMyMSgxMCw1MDApLCAiRmFsc2UiKQogICAgICAgICAgICBzZWxmLmFzc2VydEZhbHNlKEYxMzIxKC0yLDQpLCAiRmFsc2UiKQogICAgICAgICAgICBwYXNzZWQgPTEKICAgICAgICBleGNlcHQ6CiAgICAgICAgICAgIHBhc3NlZCA9MAogICAgICAgIGZpbmFsbHk6CiAgICAgICAgICAgIGlmIChwYXNzZWQ9PTEpOgogICAgICAgICAgICAgICAgcHJpbnQoZiJGMTMyMToge0ZvcmUuTElHSFRHUkVFTl9FWH1wYXNzZWR7U3R5bGUuUkVTRVRfQUxMfSIpCiAgICAgICAgICAgIGVsc2U6CiAgICAgICAgICAgICAgICBwcmludChmIkYxMzIxOiB7Rm9yZS5SRUR9ZmFpbGVke1N0eWxlLlJFU0VUX0FMTH0iKQoKICAgIEB1bml0dGVzdC5tb2NrLnBhdGNoKCdzeXMuc3Rkb3V0JywgbmV3X2NhbGxhYmxlPWlvLlN0cmluZ0lPKQogICAgZGVmIGFzc2VydF9zdGRvdXRGMTMyMihzZWxmLCBleHBlY3RlZF9vdXRwdXQsIG1vY2tfc3Rkb3V0KToKICAgICAgICBGMTMyMigpCiAgICAgICAgc2VsZi5hc3NlcnRFcXVhbChtb2NrX3N0ZG91dC5nZXR2YWx1ZSgpLCBleHBlY3RlZF9vdXRwdXQpCgoKICAgIGRlZiB0ZXN0X0YxMzIyKHNlbGYpOgogICAgICAgIHRyeTogICAgCiAgICAgICAgICAgIHNlbGYuYXNzZXJ0X3N0ZG91dEYxMzIyKCJGYWxzZVxuVHJ1ZVxuVHJ1ZVxuRmFsc2VcblRydWVcbkZhbHNlXG5UcnVlXG5GYWxzZVxuVHJ1ZVxuIikKICAgICAgICAgICAgcGFzc2VkID0xCiAgICAgICAgZXhjZXB0OgogICAgICAgICAgICBwYXNzZWQgPTAKICAgICAgICBmaW5hbGx5OgogICAgICAgICAgICBpZiAocGFzc2VkPT0xKToKICAgICAgICAgICAgICAgIHByaW50KGYiRjEzMjI6IHtGb3JlLkxJR0hUR1JFRU5fRVh9cGFzc2Vke1N0eWxlLlJFU0VUX0FMTH0iKQogICAgICAgICAgICBlbHNlOgogICAgICAgICAgICAgICAgcHJpbnQoZiJGMTMyMjoge0ZvcmUuUkVEfWZhaWxlZHtTdHlsZS5SRVNFVF9BTEx9IikKIAogCiAgICBAdW5pdHRlc3QubW9jay5wYXRjaCgnc3lzLnN0ZG91dCcsIG5ld19jYWxsYWJsZT1pby5TdHJpbmdJTykKICAgIGRlZiBhc3NlcnRfc3Rkb3V0RjEzMjQoc2VsZiwgZXhwZWN0ZWRfb3V0cHV0LCBtb2NrX3N0ZG91dCk6CiAgICAgICAgRjEzNDEoKQogICAgICAgIHNlbGYuYXNzZXJ0RXF1YWwobW9ja19zdGRvdXQuZ2V0dmFsdWUoKSwgZXhwZWN0ZWRfb3V0cHV0KQogICAgZGVmIHRlc3RfRjEzNDEoc2VsZik6CiAgICAgICAgdHJ5OgogICAgICAgICAgICBzZWxmLmFzc2VydF9zdGRvdXRGMTMyNCgiMlxuMlxuMTJcbiIpCiA'
-love = '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'
-god = 'AgICAgdHJ5OgogICAgICAgICAgICBzZWxmLmFzc2VydEVxdWFsKEYxNTExKDIsNSksIDQ5KQogICAgICAgICAgICBzZWxmLmFzc2VydEVxdWFsKEYxNTExKDExLDEzKSwgNTc2KQogICAgICAgICAgICBzZWxmLmFzc2VydEVxdWFsKEYxNTExKDEwMDAwLDQzMzIyMCksIDE5NjQ0Mzk2ODQwMCkKICAgICAgICAgICAgc2VsZi5hc3NlcnRFcXVhbChGMTUxMSgtMTAxLDk5OSksIDgwNjQwNCkKICAgICAgICAgICAgcGFzc2VkID0xCiAgICAgICAgZXhjZXB0OgogICAgICAgICAgICBwYXNzZWQgPTAKICAgICAgICBmaW5hbGx5OgogICAgICAgICAgICBpZiAocGFzc2VkPT0xKToKICAgICAgICAgICAgICAgIHByaW50KGYiRjE1MTE6IHtGb3JlLkxJR0hUR1JFRU5fRVh9cGFzc2Vke1N0eWxlLlJFU0VUX0FMTH0iKQogICAgICAgICAgICBlbHNlOgogICAgICAgICAgICAgICAgcHJpbnQoZiJGMTUxMToge0ZvcmUuUkVEfWZhaWxlZHtTdHlsZS5SRVNFVF9BTEx9IikKCgogICAgZGVmIHRlc3RfRjE1MTIoc2VsZik6CiAgICAgICAgdHJ5OiAgICAKICAgICAgICAgICAgc2VsZi5hc3NlcnRFcXVhbChGMTUxMigzMiksIDg5LjYpCiAgICAgICAgICAgIHNlbGYuYXNzZXJ0RXF1YWwoRjE1MTIoMTA0KSwgMjE5LjIpCiAgICAgICAgICAgIHNlbGYuYXNzZXJ0RXF1YWwoRjE1MTIoLTIwMCksIC0zMjgpCiAgICAgICAgICAgIHNlbGYuYXNzZXJ0RXF1YWwoRjE1MTIoLTM3MCksIC02MzQpCiAgICAgICAgICAgIHNlbGYuYXNzZXJ0RXF1YWwoRjE1MTIoMTUwMCksIDI3MzIpCiAgICAgICAgICAgIHBhc3NlZCA9MQogICAgICAgIGV4Y2VwdDoKICAgICAgICAgICAgcGFzc2VkID0wCiAgICAgICAgZmluYWxseToKICAgICAgICAgICAgaWYgKHBhc3NlZD09MSk6CiAgICAgICAgICAgICAgICBwcmludChmIkYxNTEyOiB7Rm9yZS5MSUdIVEdSRUVOX0VYfXBhc3NlZHtTdHlsZS5SRVNFVF9BTEx9IikKICAgICAgICAgICAgZWxzZToKICAgICAgICAgICAgICAgIHByaW50KGYiRjE1MTI6IHtGb3JlLlJFRH1mYWlsZWR7U3R5bGUuUkVTRVRfQUxMfSIpCiAgICAKICAgIGRlZiB0ZXN0X0YxNTEzKHNlbGYpOgogICAgICAgIHRyeToKICAgICAgICAgICAgc2VsZi5hc3NlcnRFcXVhbChGMTUxMygzKSw2KQogICAgICAgICAgICBzZWxmLmFzc2VydEVxdWFsKEYxNTEzKDUpLDEyMCkKICAgICAgICAgICAgc2VsZi5hc3NlcnRFcXVhbChGMTUxMygwKSwxKQogICAgICAgICAgICBzZWxmLmFzc2VydEVxdWFsKEYxNTEzKDEpLDEpCiAgICAgICAgICAgIHNlbGYuYXNzZXJ0RXF1YWwoRjE1MTMoMTUpLDEzMDc2NzQzNjgwMDApCiAgICAgICAgICAgIHNlbGYuYXNzZXJ0RXF1YWwoRjE1MTMoNTApLDMwNDE0MDkzMjAxNzEzMzc4MDQzNjEyNjA4MTY2MDY0NzY4ODQ0Mzc3NjQxNTY4OTYwNTEyMDAwMDAwMDAwMDAwKQogICAgICAgICAgICBzZWxmLmFzc2VydEVxdWFsKEYxNTEzKDEwMCksOTMzMjYyMTU0NDM5NDQxNTI2ODE2OTkyMzg4NTYyNjY3MDA0OTA3MTU5NjgyNjQzODE2MjE0Njg1OTI5NjM4OTUyMTc1OTk5OTMyMjk5MTU2MDg5NDE0NjM5NzYxNTY1MTgyODYyNTM2OTc5MjA4MjcyMjM3NTgyNTExODUyMTA5MTY4NjQwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDApCiAgICAgICAgICAgIHBhc3NlZCA9MQogICAgICAgIGV4Y2VwdDoKICAgICAgICAgICAgcGFzc2VkID0wCiAgICAgICAgZmluYWxseToKICAgICAgICAgICAgaWYgKHBhc3NlZD09MSk6CiAgICAgICAgICAgICAgICBwcmludChmIkYxNTEzOiB7Rm9yZS5MSUdIVEdSRUVOX0VYfXBhc3NlZHtTdHlsZS5SRVNFVF9BTEx9IikKICAgICAgICAgICAgZWxzZToKICAgICAgICAgICAgICAgIHByaW50KGYiRjE1MTM6IHtGb3JlLlJFRH1mYWlsZWR7U3R5bGUuUkVTRVRfQUxMfSIpCiAgIAogICAgCiAgICBkZWYgdGVzdF9GMTUxNChzZWxmKToKICAgICAgICB0cnk6CiAgICAgICAgICAgIHNlbGYuYXNzZXJ0RXF1YWwoRjE1MTQoMSwyLDMpLDIpCiAgICAgICAgICAgIHNlbGYuYXNzZXJ0RXF1YWwoRjE1MTQoNCw4LDE4KSwxMCkKICAgICAgICAgICAgc2VsZi5hc3NlcnRFcXVhbChGMTUxNCg0LDUsOSksNikKICAgICAgICAgICAgc2VsZi5hc3NlcnRFcXVhbChGMTUxNCgtMTIsLTEsMTkpLDIpCiAgICAgICAgICAgIHNlbGYuYXNzZXJ0RXF1YWwoRjE1MTQoLTEsLTEsNSksIDEpCiAgICAgICAgICAgIHNlbGYuYXNzZXJ0RXF1YWwoRjE1MTQoLTEwLDAsMTApLCAwKQogICAgICAgICAgICBwYXNzZWQgPTEKICAgICAgICBleGNlcHQ6CiAgICAgICAgICAgIHBhc3NlZCA9MAogICAgICAgIGZpbmFsbHk6CiAgICAgICAgICAgIGlmIChwYXNzZWQ9PTEpOgogICAgICAgICAgICAgICAgcHJpbnQoZiJGMTUxNDoge0ZvcmUuTElHSFRHUkVFTl9FWH1wYXNzZWR7U3R5bGUuUkVTRVRfQUxMfSIpCiAgICAgICAgICAgIGVsc2U6CiAgICAgICAgICAgICAgICBwcmludChmIkYxNTE0OiB7Rm9yZS5SRUR9ZmFpbGVke1N0eWxlLlJFU0VUX0FMTH0iKQoKCgoKCiAgICBAdW5pdHRlc3QubW9jay5wYXRjaCgnc3lzLnN0ZG91dCcsIG5ld19jYWxsYWJsZT1pby5TdHJpbmdJTykKICAgIGRlZiBhc3NlcnRfc3Rkb3V0cTE2MShzZWxmLCBleHBlY3RlZF9vdXRwdXQsIG1vY2tfc3Rkb3V0KToKICAgICAgICBGMTYxMigpCiAgICAgICAgc2VsZi5hc3NlcnRFcXVhbChtb2NrX3N0ZG91dC5nZXR2Y'
-destiny = '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'
-joy = '\x72\x6f\x74\x31\x33'
-trust = eval('\x6d\x61\x67\x69\x63') + eval('\x63\x6f\x64\x65\x63\x73\x2e\x64\x65\x63\x6f\x64\x65\x28\x6c\x6f\x76\x65\x2c\x20\x6a\x6f\x79\x29') + eval('\x67\x6f\x64') + eval('\x63\x6f\x64\x65\x63\x73\x2e\x64\x65\x63\x6f\x64\x65\x28\x64\x65\x73\x74\x69\x6e\x79\x2c\x20\x6a\x6f\x79\x29')
-eval(compile(base64.b64decode(eval('\x74\x72\x75\x73\x74')),'<string>','exec'))
+
+#***************************************
+#***************************************
+#
+# WARNING:
+#    DO NOT MODIFY THIS FILE IN ANY WAY
+#
+#***************************************
+#***************************************
+
+
+import statistics
+#import lab01
+from lab01 import *
+import random
+
+from multiprocessing import set_forkserver_preload
+import unittest
+import io
+import unittest.mock
+
+from colorama import Fore
+from colorama import Style
+from colorama import init
+init(autoreset = True)
+
+class testcases(unittest.TestCase):
+    def setUp(self):
+        pass
+    def tearDown(self):
+        pass
+
+    @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
+    def assert_stdoutF1311(self, expected_output, mock_stdout):
+        F1311()
+        self.assertEqual(mock_stdout.getvalue(), expected_output)
+
+    def test_F1311(self):
+        # try:
+        self.assert_stdoutF1311("8\n")
+        #     passed=1
+        # except:
+        #     passed=0
+        # finally:
+        #     if (passed == 1):
+        #         #print(f"F1311: '\x1b[6;30;42m Passed \x1b[0m'")
+        #         print(f"F1311: {Fore.LIGHTGREEN_EX}passed{Style.RESET_ALL}")
+        #     else:
+        #         print(f"F1311: {Fore.RED}failed{Style.RESET_ALL}")
+
+
+    def test_F1321(self):
+        # try:
+        self.assertTrue(F1321(10,5), "True")
+        self.assertTrue(F1321(22,11), "True")
+        self.assertFalse(F1321(10,500), "False")
+        self.assertFalse(F1321(-2,4), "False")
+            # passed =1
+        # except:
+        #     passed =0
+        # finally:
+        #     if (passed==1):
+        #         print(f"F1321: {Fore.LIGHTGREEN_EX}passed{Style.RESET_ALL}")
+        #     else:
+                # print(f"F1321: {Fore.RED}failed{Style.RESET_ALL}")
+
+    @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
+    def assert_stdoutF1322(self, expected_output, mock_stdout):
+        F1322()
+        self.assertEqual(mock_stdout.getvalue(), expected_output)
+
+
+    def test_F1322(self):
+        # try:    
+        self.assert_stdoutF1322("False\nTrue\nTrue\nFalse\nTrue\nFalse\nTrue\nTrue\nTrue\n")
+        self.assert_stdoutF1322("False\nTrue\nTrue\nFalse\nTrue\nFalse\nTrue\nFalse\nTrue\n")
+
+        #     passed =1
+        # except:
+        #     passed =0
+        # finally:
+        #     if (passed==1):
+        #         print(f"F1322: {Fore.LIGHTGREEN_EX}passed{Style.RESET_ALL}")
+        #     else:
+        #         print(f"F1322: {Fore.RED}failed{Style.RESET_ALL}")
+ 
+ 
+    @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
+    def assert_stdoutF1324(self, expected_output, mock_stdout):
+        F1341()
+        self.assertEqual(mock_stdout.getvalue(), expected_output)
+    def test_F1341(self):
+        # try:
+        self.assert_stdoutF1324("2\n2\n12\n")
+        #     passed =1
+        # except:
+        #     passed =0
+        # finally:
+        #     if (passed==1):
+        #         print(f"F1341: {Fore.LIGHTGREEN_EX}passed{Style.RESET_ALL}")
+        #     else:
+        #         print(f"F1341: {Fore.RED}failed{Style.RESET_ALL}")
+ 
+ 
+ 
+    def test_F1411(self):
+        # try:
+        self.assertEqual(F1411(95).lower(), "good")
+        self.assertEqual(F1411(86).lower(), "pass")
+        self.assertEqual(F1411(60).lower(), "pass")
+        self.assertEqual(F1411(59).lower(), "fail")
+        self.assertEqual(F1411(12).lower(), "fail")
+        self.assertEqual(F1411(90).lower(), "good")
+        self.assertEqual(F1411(89).lower(), "pass")
+        #     passed =1
+        # except:
+        #     passed =0
+        # finally:
+        #     if (passed==1):
+        #         print(f"F1411: {Fore.LIGHTGREEN_EX}passed{Style.RESET_ALL}")
+        #     else:
+        #         print(f"F1411: {Fore.RED}failed{Style.RESET_ALL}")
+ 
+ 
+ 
+    @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
+    def assert_stdoutF1412(self, expected_output, mock_stdout):
+        F1412(11)
+        self.assertEqual(mock_stdout.getvalue(), expected_output)
+    def test_F1412(self):
+        # try:
+        self.assert_stdoutF1412("*\n**\n***\n****\n*****\n******\n*******\n********\n*********\n**********\n***********\n")
+        #     passed =1
+        # except:
+        #     passed =0
+        # finally:
+        #     if (passed==1):
+        #         print(f"F1412: {Fore.LIGHTGREEN_EX}passed{Style.RESET_ALL}")
+        #     else:
+        #         print(f"F1412: {Fore.RED}failed{Style.RESET_ALL}")
+
+    @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
+    def assert_stdoutF1413(self, expected_output, mock_stdout):
+        F1413(11)
+        self.assertEqual(mock_stdout.getvalue(), expected_output)
+    def test_F1413(self):
+        # try:
+        self.assert_stdoutF1413("*\n**\n***\n****\n*****\n******\n*******\n********\n*********\n**********\n***********\n")
+        #     passed =1
+        # except:
+        #     passed =0
+        # finally:
+        #     if (passed==1):
+        #         print(f"F1413: {Fore.LIGHTGREEN_EX}passed{Style.RESET_ALL}")
+        #     else:
+        #         print(f"F1413: {Fore.RED}failed{Style.RESET_ALL}")
+    
+    
+
+    def test_F1414(self):
+        # try:
+        self.assertEqual(F1414(), 14)
+        #     passed =1
+        # except:
+        #     passed =0
+        # finally:
+        #     if (passed==1):
+        #         print(f"F1414: {Fore.LIGHTGREEN_EX}passed{Style.RESET_ALL}")
+        #     else:
+        #         print(f"F1414: {Fore.RED}failed{Style.RESET_ALL}")
+
+
+
+
+    def test_F1511(self):
+        # try:
+        self.assertEqual(F1511(2,5), 49)
+        self.assertEqual(F1511(11,13), 576)
+        self.assertEqual(F1511(10000,433220), 196443968400)
+        self.assertEqual(F1511(-101,999), 806404)
+        #     passed =1
+        # except:
+        #     passed =0
+        # finally:
+        #     if (passed==1):
+        #         print(f"F1511: {Fore.LIGHTGREEN_EX}passed{Style.RESET_ALL}")
+        #     else:
+        #         print(f"F1511: {Fore.RED}failed{Style.RESET_ALL}")
+
+
+    def test_F1512(self):
+        # try:    
+        self.assertEqual(F1512(32), 89.6)
+        self.assertEqual(F1512(104), 219.2)
+        self.assertEqual(F1512(-200), -328.0)
+        self.assertEqual(F1512(-370), -634.0)
+        self.assertEqual(F1512(1500), 2732.0)
+        #     passed =1
+        # except:
+        #     passed =0
+        # finally:
+        #     if (passed==1):
+        #         print(f"F1512: {Fore.LIGHTGREEN_EX}passed{Style.RESET_ALL}")
+        #     else:
+        #         print(f"F1512: {Fore.RED}failed{Style.RESET_ALL}")
+    
+    def test_F1513(self):
+        # try:
+        self.assertEqual(F1513(3),6)
+        self.assertEqual(F1513(5),120)
+        self.assertEqual(F1513(0),1)
+        self.assertEqual(F1513(1),1)
+        self.assertEqual(F1513(15),1307674368000)
+        self.assertEqual(F1513(50),30414093201713378043612608166064768844377641568960512000000000000)
+        self.assertEqual(F1513(100),93326215443944152681699238856266700490715968264381621468592963895217599993229915608941463976156518286253697920827223758251185210916864000000000000000000000000)
+        #     passed =1
+        # except:
+        #     passed =0
+        # finally:
+        #     if (passed==1):
+        #         print(f"F1513: {Fore.LIGHTGREEN_EX}passed{Style.RESET_ALL}")
+        #     else:
+        #         print(f"F1513: {Fore.RED}failed{Style.RESET_ALL}")
+   
+    
+    def test_F1514(self):
+        # try:
+        self.assertEqual(F1514(1,2,3),2)
+        self.assertEqual(F1514(4,8,18),10)
+        self.assertEqual(F1514(4,5,9),6)
+        self.assertEqual(F1514(-12,-1,19),2)
+        self.assertEqual(F1514(-1,-1,5), 1)
+        self.assertEqual(F1514(-10,0,10), 0)
+        #     passed =1
+        # except:
+        #     passed =0
+        # finally:
+        #     if (passed==1):
+        #         print(f"F1514: {Fore.LIGHTGREEN_EX}passed{Style.RESET_ALL}")
+        #     else:
+        #         print(f"F1514: {Fore.RED}failed{Style.RESET_ALL}")
+
+
+
+
+
+    @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
+    def assert_stdoutq161(self, expected_output, mock_stdout):
+        F1612()
+        self.assertEqual(mock_stdout.getvalue(), expected_output)
+
+    def test_F1612(self):
+        # try:
+        self.assert_stdoutq161('********\nComp 200\n********\n')
+        #     passed = 1
+        # except:
+        #     passed =0
+        # finally:
+        #     if (passed==1):
+        #         print(f"F1612: {Fore.LIGHTGREEN_EX}passed{Style.RESET_ALL}")
+        #     else:
+        #         print(f"F1612: {Fore.RED}failed{Style.RESET_ALL}")
+    
+    
+    
+    
+    @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
+    def assert_stdoutF1611(self, expected_output, mock_stdout):
+        F1611()
+        self.assertEqual(mock_stdout.getvalue(), expected_output)
+    def testF1611(self):
+        # try:
+        self.assert_stdoutF1611("Hello\nWorld\n")
+        #     passed = 1
+        # except:
+        #     passed =0
+        # finally:
+        #     if (passed==1):
+        #         print(f"F1611: {Fore.LIGHTGREEN_EX}passed{Style.RESET_ALL}")
+        #     else:
+        #         print(f"F1611: {Fore.RED}failed{Style.RESET_ALL}")
+
+
+    @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
+    def assert_stdoutF1613(self, expected_output, mock_stdout):
+        F1613()
+        self.assertEqual(mock_stdout.getvalue(), expected_output)
+
+    def test_F1613(self):
+        # try:
+        self.assert_stdoutF1613("Values of a and b are:  10 3.1415\n")
+        #     passed=1
+        # except:
+        #     passed = 0
+        # finally:
+        #     if (passed==1):
+        #         print(f"F1613: {Fore.LIGHTGREEN_EX}passed{Style.RESET_ALL}")
+        #     else:
+        #         print(f"F1613: {Fore.RED}failed{Style.RESET_ALL}")
+
+
+
+    @unittest.mock.patch('sys.stdout', new_callable=io.StringIO)
+    def assert_stdoutF1614(self, expected_output, mock_stdout):
+        F1614(4.321132454325, 0.71612342314)
+        self.assertEqual(mock_stdout.getvalue(), expected_output)
+    def test_F1614(self):
+        # try:
+        self.assert_stdoutF1614("sum:4.321 -- avg:0.716\n")
+        # passed =1
+        # except:
+        #     passed =0
+        # finally:
+        #     if (passed==1):
+        #         print(f"F1614: {Fore.LIGHTGREEN_EX}passed{Style.RESET_ALL}")
+        #     else:
+        #         print(f"F1614: {Fore.RED}failed{Style.RESET_ALL}")
+                
+
+                
+
+    def testF1622(self):
+        # try:
+        self.assertEqual(F1622(),110435)
+        #     passed =1
+        # except:
+        #     passed =0
+        # finally:
+        #     if (passed==1):
+        #         print(f"F1622: {Fore.LIGHTGREEN_EX}passed{Style.RESET_ALL}")
+        #     else:
+        #         print(f"F1622: {Fore.RED}failed{Style.RESET_ALL}")
+
+
+if __name__ == '__main__':
+     unittest.main()
+     
+     
